@@ -448,7 +448,9 @@ async def marple(username, max_count, url_filter_enabled, is_debug=False, proxy=
     if not is_debug or not os.path.exists(debug_filename):
         coros = [parser.run(results, username, max_count, proxy=proxy) for parser in parsers]
 
-        errors = [await f for f in tqdm.tqdm(asyncio.as_completed(coros), total=len(coros))]
+        # errors = [await f for f in tqdm.tqdm(asyncio.as_completed(coros), total=len(coros))]
+        errors = [await f for f in asyncio.as_completed(coros)] # no tqdm
+        
 
         if is_debug:
             with open(debug_filename, 'w') as results_file:
